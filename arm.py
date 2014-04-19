@@ -52,5 +52,5 @@ if __name__ == '__main__':
   setup()
   PWM.start("P9_14",11.5,100,0)
   time.sleep(5)
-  PWM.stop(ESC1PIN)
+  PWM.stop("P9_14")
   PWM.cleanup()
