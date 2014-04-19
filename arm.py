@@ -1,5 +1,5 @@
-import Adafruit_BBIO.GPIO as GPIO2
-import Adafruit_BBIO.PWM as PWM2
+import Adafruit_BBIO.GPIO2 as GPIO2
+import Adafruit_BBIO.PWM2 as PWM2
 from bbio import *
 import ctypes, time
 libc = ctypes.CDLL('libc.so.6')
@@ -16,13 +16,13 @@ def delayMicroseconds(us):
 
 def setupESC(pin):
   # set pin as OUTPUT
-  GPIO.setup(pin, GPIO.OUT)
+  GPIO2.setup(pin, GPIO2.OUT)
   # arm
-  for armingTime in (0, 500):
-    GPIO.output(pin, GPIO.HIGH)
+  for armingTime in (0, 500)
+    GPIO2.output(pin, GPIO2.HIGH)
     delayMicroseconds(PULSETIME)
     #time.sleep(1.1/1000) #1.1 milliseconds
-    GPIO.output(pin, GPIO.LOW)
+    GPIO2.output(pin, GPIO2.LOW)
     delay(10-(PULSETIME/1000))
     #time.sleep(8.9/1000) #8.9 milliseconds
   print "Done arming " + pin
@@ -30,9 +30,9 @@ def setupESC(pin):
 
 def drive(pin):
   # drive pin
-  GPIO.output(pin, GPIO.HIGH)
+  GPIO2.output(pin, GPIO2.HIGH)
   delayMicroseconds(PULSETIME) #high for 1.1 milliseconds
-  GPIO.output(pin, GPIO.LOW)
+  GPIO2.output(pin, GPIO2.LOW)
   delay(10-(PULSETIME/1000)) #low for 8.9 milliseconds
   #total period is 10 milliseconds
   #frequency is 100 Hz
