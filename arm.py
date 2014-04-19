@@ -54,5 +54,5 @@ def main():
   #each cycle takes 10 milliseconds
   while (count < total):
     drive(ESC1PIN)
-    count++
+    count += 1
   GPIO.cleanup()
