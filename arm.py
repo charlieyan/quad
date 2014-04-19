@@ -20,7 +20,6 @@ def setupESC(pin):
     delay(10-(PULSETIME/1000))
     #time.sleep(8.9/1000) #8.9 milliseconds
   print "Done arming " + pin
-  return
 
 def drive(pin):
   # drive pin
@@ -42,19 +41,14 @@ def setupGlobalPins():
   ESC4PIN = "P9_14"
 
 def setup():
-  # setupGlobalPins()
-  # setupESC(ESC1PIN)
+  setupGlobalPins()
+  setupESC(ESC1PIN)
   # setupESC(ESC2PIN)
   # setupESC(ESC3PIN)
   # setupESC(ESC4PIN)
-  pass
 
 def loop():
-  # drive(ESC1PIN)
-  for angle in range(180):
-    servo1.write(angle)
-    delay(15)
-
+  drive(ESC1PIN)
 
 if __name__ == '__main__':
   run(setup, loop)
