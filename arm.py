@@ -31,7 +31,7 @@ def drive(pin):
   # drive pin
   GPIO.output(pin, GPIO.HIGH)
   delayMicroseconds(PULSETIME) #high for 1.1 milliseconds
-  GPIO.output(pin, LOW)
+  GPIO.output(pin, GPIO.LOW)
   delay(10-1.1) #low for 8.9 milliseconds
   #total period is 10 milliseconds
   #frequency is 100 Hz
