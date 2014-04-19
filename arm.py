@@ -19,12 +19,16 @@ def setupESC(pin):
     #time.sleep(8.9/1000) #8.9 milliseconds
   print "Done arming " + pin
   return
-  
+
 def setupGlobalPins():
-  global ESC1PIN = "P9_11"
-  global ESC2PIN = "P9_12"
-  global ESC3PIN = "P9_13"
-  global ESC4PIN = "P9_14"
+  global ESC1PIN 
+  ESC1PIN = "P9_11"
+  global ESC2PIN 
+  ESC2PIN = "P9_12"
+  global ESC3PIN 
+  ESC3PIN = "P9_13"
+  global ESC4PIN 
+  ESC4PIN = "P9_14"
 
 def main():
   setupGlobalPins()
