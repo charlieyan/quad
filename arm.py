@@ -1,6 +1,9 @@
 import Adafruit_BBIO.GPIO as AGPIO
 import Adafruit_BBIO.PWM as PWM2
 from bbio import *
+from Servo import *
+
+servo1 = Servo(PWM1A)
 
 #CONSTANTS
 PULSETIME = 1100
@@ -39,14 +42,19 @@ def setupGlobalPins():
   ESC4PIN = "P9_14"
 
 def setup():
-  setupGlobalPins()
-  setupESC(ESC1PIN)
-  setupESC(ESC2PIN)
-  setupESC(ESC3PIN)
-  setupESC(ESC4PIN)
+  # setupGlobalPins()
+  # setupESC(ESC1PIN)
+  # setupESC(ESC2PIN)
+  # setupESC(ESC3PIN)
+  # setupESC(ESC4PIN)
+  pass
 
 def loop():
-  drive(ESC1PIN)
+  # drive(ESC1PIN)
+  for angle in range(180):
+    servo1.write(angle)
+    delay(15)
+
 
 if __name__ == '__main__':
   run(setup, loop)
