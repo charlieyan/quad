@@ -57,3 +57,6 @@ def main():
     drive(ESC1PIN)
     count += 1
   GPIO.cleanup()
+
+if __name__ == '__main__':
+  main() 
