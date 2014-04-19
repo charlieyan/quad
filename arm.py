@@ -1,18 +1,9 @@
 import Adafruit_BBIO.GPIO as AGPIO
 import Adafruit_BBIO.PWM as PWM2
 from bbio import *
-import ctypes, time
-libc = ctypes.CDLL('libc.so.6')
 
 #CONSTANTS
 PULSETIME = 1100
-
-def delay(ms):
-  ms = int(ms*1000)
-  libc.usleep(ms)
-
-def delayMicroseconds(us):
-  libc.usleep(int(us))
 
 def setupESC(pin):
   # set pin as OUTPUT
