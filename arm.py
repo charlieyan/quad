@@ -1,9 +1,6 @@
 import Adafruit_BBIO.GPIO as AGPIO
 import Adafruit_BBIO.PWM as PWM2
 from bbio import *
-from Servo import *
-
-servo1 = Servo(GPIO1_28)
 
 #CONSTANTS
 PULSETIME = 1100
