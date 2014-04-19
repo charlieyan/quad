@@ -50,12 +50,12 @@ def main():
   setupGlobalPins()
   print ESC1PIN
   setupESC(ESC1PIN)
-  count = 0
-  total = 100 * 60 * 2 # 2 minutes
-  #each cycle takes 10 milliseconds
-  while (count < total):
-    drive(ESC1PIN)
-    count += 1
+  # count = 0
+  # total = 100 * 60 * 2 # 2 minutes
+  # #each cycle takes 10 milliseconds
+  # while (count < total):
+  #   drive(ESC1PIN)
+  #   count += 1
   GPIO.cleanup()
 
 if __name__ == '__main__':
