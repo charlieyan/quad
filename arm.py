@@ -1,6 +1,7 @@
 import Adafruit_BBIO.GPIO as AGPIO
 import Adafruit_BBIO.PWM as PWM2
 from bbio import *
+import time
 
 #CONSTANTS
 PULSETIME = 1100
@@ -48,4 +49,8 @@ def loop():
   drive(ESC1PIN)
 
 if __name__ == '__main__':
-  run(setup, loop)
+  setup()
+  PWM.start(ESC1PIN,11,100,0)
+  time.sleep(5)
+  PWM.stop(ESC1PIN)
+  PWM.cleanup()
