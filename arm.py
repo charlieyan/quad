@@ -1,5 +1,5 @@
 import Adafruit_BBIO.GPIO as AGPIO
-import Adafruit_BBIO.PWM as PWM2
+import Adafruit_BBIO.PWM as PWM
 from bbio import *
 import time
 
