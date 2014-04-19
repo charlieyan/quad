@@ -1,5 +1,5 @@
-import Adafruit_BBIO.GPIO2 as GPIO2
-import Adafruit_BBIO.PWM2 as PWM2
+import Adafruit_BBIO.GPIO as GPIO2
+import Adafruit_BBIO.PWM as PWM2
 from bbio import *
 import ctypes, time
 libc = ctypes.CDLL('libc.so.6')
