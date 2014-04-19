@@ -18,7 +18,7 @@ def setupESC(pin):
   # set pin as OUTPUT
   GPIO2.setup(pin, GPIO2.OUT)
   # arm
-  for armingTime in (0, 500)
+  for armingTime in (0, 500):
     GPIO2.output(pin, GPIO2.HIGH)
     delayMicroseconds(PULSETIME)
     #time.sleep(1.1/1000) #1.1 milliseconds
