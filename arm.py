@@ -52,7 +52,7 @@ def main():
   count = 0
   total = 100 * 60 * 2 # 2 minutes
   #each cycle takes 10 milliseconds
-  while (count < total)
+  while (count < total):
     drive(ESC1PIN)
     count++
   GPIO.cleanup()
