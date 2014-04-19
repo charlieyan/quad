@@ -28,7 +28,13 @@ def setupESC(pin):
   return
 
 def drive(pin):
-
+  # drive pin
+  GPIO.output(pin, GPIO.HIGH)
+  delayMicroseconds(PULSETIME) #high for 1.1 milliseconds
+  GPIO.output(pin, LOW)
+  delay(10-1.1) #low for 8.9 milliseconds
+  #total period is 10 milliseconds
+  #frequency is 100 Hz
 
 def setupGlobalPins():
   global ESC1PIN 
@@ -43,3 +49,10 @@ def setupGlobalPins():
 def main():
   setupGlobalPins()
   setupESC(ESC1PIN)
+  count = 0
+  total = 100 * 60 * 2 # 2 minutes
+  #each cycle takes 10 milliseconds
+  while (count < total)
+    drive(ESC1PIN)
+    count++
+  GPIO.cleanup()
