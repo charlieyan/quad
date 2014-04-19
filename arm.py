@@ -6,6 +6,13 @@ libc = ctypes.CDLL('libc.so.6')
 #CONSTANTS
 PULSETIME = 1100
 
+def delay(ms):
+  ms = int(ms*1000)
+  libc.usleep(ms)
+
+def delayMicroseconds(us):
+  libc.usleep(int(us))
+
 def setupESC(pin):
   # set pin as OUTPUT
   GPIO.setup(pin, GPIO.OUT)
@@ -19,6 +26,9 @@ def setupESC(pin):
     #time.sleep(8.9/1000) #8.9 milliseconds
   print "Done arming " + pin
   return
+
+def drive(pin):
+
 
 def setupGlobalPins():
   global ESC1PIN 
