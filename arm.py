@@ -47,12 +47,15 @@ def setupGlobalPins():
   global ESC4PIN 
   ESC4PIN = "P9_14"
 
-def main():
+def setup():
   setupGlobalPins()
   setupESC(ESC1PIN)
   setupESC(ESC2PIN)
   setupESC(ESC3PIN)
   setupESC(ESC4PIN)
 
+def loop():
+  drive(ESC1PIN)
+
 if __name__ == '__main__':
-  main()
+  run(setup, loop)
