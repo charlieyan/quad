@@ -1,5 +1,6 @@
-import Adafruit_BBIO.GPIO as GPIO
-import Adafruit_BBIO.PWM as PWM
+import Adafruit_BBIO.GPIO as GPIO2
+import Adafruit_BBIO.PWM as PWM2
+from bbio import *
 import ctypes, time
 libc = ctypes.CDLL('libc.so.6')
 
@@ -32,7 +33,7 @@ def drive(pin):
   GPIO.output(pin, GPIO.HIGH)
   delayMicroseconds(PULSETIME) #high for 1.1 milliseconds
   GPIO.output(pin, GPIO.LOW)
-  delay(10-1.1) #low for 8.9 milliseconds
+  delay(10-(PULSETIME/1000)) #low for 8.9 milliseconds
   #total period is 10 milliseconds
   #frequency is 100 Hz
 
