@@ -34,5 +34,8 @@ print "Setting esc on pin " + esc + " to speed " + sys.argv[2] \
   + " for duration " + sys.argv[3]
 
 PWM.set_duty_cycle(esc, speed)
+
 time.sleep(duration)
-PWM.set_duty_cycle(esc, float(4))
+
+PWM.stop(esc)
+PWM.cleanup()
