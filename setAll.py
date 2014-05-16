@@ -15,7 +15,7 @@ def setGlobals():
   ESC1PIN = "P8_13"
   ESC2PIN = "P9_16"
   ESC3PIN = "P9_21"
-  ESC4PIN = "P9_14"
+  ESC4PIN = "P9_42"
 
 def armESCs(escList):
   for esc in escList:
@@ -26,16 +26,22 @@ escList = [ESC1PIN, ESC2PIN, ESC3PIN, ESC4PIN]
 armESCs(escList)
 
 # get command arguments
-escID = sys.argv[1] # from 0 - 3
-esc = escList[int(escID)]
-speed = float(sys.argv[2]) # from 4 - 10
-duration = float(sys.argv[3]) # number of seconds
-print "Setting esc on pin " + esc + " to speed " + sys.argv[2] \
-  + " for duration " + sys.argv[3]
+speed = float(sys.argv[1]) # from 4 - 10
+dontTime = False
+if (sys.argv[2] == "x"):
+  dontTime = True
+else:
+  duration = float(sys.argv[2]) # number of seconds
+  print "Setting all escs to speed " + sys.argv[1] \
+  + " for duration " + sys.argv[2]
 
-PWM.set_duty_cycle(esc, speed)
+for esc in escList:
+  PWM.set_duty_cycle(esc, speed)
 
-time.sleep(duration)
-
-PWM.stop(esc)
-PWM.cleanup()
+if not dontTime:
+  time.sleep(duration)
+  for esc in escList:
+    PWM.stop(esc)
+  PWM.cleanup()
+else:
+  print "not timing this"
