@@ -27,7 +27,7 @@ def setGlobals():
   ESC1PIN = "P8_13"
   ESC2PIN = "P9_16"
   ESC3PIN = "P9_21"
-  ESC4PIN = "P9_14"
+  ESC4PIN = "P9_42"
   RECVPIN = "P9_41"
   CEPIN   = "P9_27"
   IRQPIN  = "P9_32"
@@ -36,9 +36,11 @@ def armESCs(escList):
   for esc in escList:
     PWM.start(esc, 4, 50)
 
-def parseCmd(contents,escList):
+def parseCmd(contents,escList,latest):
   cmd = contents[CMD]
-  print cmd
+  if ((cmd == latest) or (cmd == None)):
+    print "nothing to do"
+    return latest
   if cmd == 1:
     # put quad at rest <1, 0, 0, 0, 0...>
     print "putting quad to rest"
@@ -54,15 +56,14 @@ def parseCmd(contents,escList):
     # update motors individually <3, 0, 1, 0, 6, 6> => sets motor on ESC1 to 6.6
     esc = escList[contents[MOT1]-1]
     speed = float(str(contents[MOT2]) + "." + str(contents[MOT2X]))
-    print "putting esc at " + esc + " at the same speed: " + str(speed)
+    print "putting esc at " + esc + " at speed: " + str(speed)
     PWM.set_duty_cycle(esc, speed)
-  else
-    return
-  return 
+  return cmd
 
 setGlobals()
 escList = [ESC1PIN, ESC2PIN, ESC3PIN, ESC4PIN]
 armESCs(escList)
+latest = 0
 
 # get command arguments
 recvDelay = float(sys.argv[1]) # how much time between reading from transmitter
@@ -92,14 +93,13 @@ radio.startListening()
 while True:
   pipe = [0]
   while not radio.available(pipe):
-    #time.sleep(0.01)
     time.sleep(recvDelay)
     print "no radio\n"
+    latest = parseCmd([1,0,0,0],escList,latest)
   recv_buffer = []
   radio.read(recv_buffer)
-  parseCmd(recv_buffer,escList)
-  print recv_buffer
-  #time.sleep(0.01)
+  latest = parseCmd(recv_buffer,escList, latest)
+  #print recv_buffer
   time.sleep(recvDelay)
 
 GPIO.cleanup()
