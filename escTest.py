@@ -1,3 +1,4 @@
+#usage: escTest.py <escID> <speed> <duration/inf>
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
 import time

@@ -3,9 +3,6 @@ import Adafruit_BBIO.PWM as PWM
 import time
 import sys
 
-#CONSTANTS
-PULSETIME = 1100
-
 # FUNCTIONS
 def setGlobals():
   global ESC1PIN

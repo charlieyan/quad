@@ -487,10 +487,10 @@ class NRF24:
 
         status = self.get_status()
         result = False
-        print status
-        print pipe_num
-        print NRF24.RX_DR
-        print _BV(NRF24.RX_DR)
+        # print status
+        # print pipe_num
+        # print NRF24.RX_DR
+        # print _BV(NRF24.RX_DR)
         # Sometimes the radio specifies that there is data in one pipe but
         # doesn't set the RX flag...
         if status & _BV(NRF24.RX_DR) or (status & 0b00001110 != 0b00001110):
