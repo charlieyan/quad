@@ -2,7 +2,13 @@ from nrf24 import NRF24
 import Adafruit_BBIO.GPIO as GPIO
 import time
 
+CMD = 0
+MOT1 = 2
+MOT2 = 4
+MOT3 = 6
+MOT4 = 8
 def parseCmd(contents):
+  print contents[CMD]
   return 
 
 #set notification pin P9_36
@@ -36,6 +42,7 @@ while True:
     print "no radio\n"
   recv_buffer = []
   radio.read(recv_buffer)
+  parseCmd(recv_buffer)
   print recv_buffer
   #time.sleep(0.01)
   time.sleep(0.5)
