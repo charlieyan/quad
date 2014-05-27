@@ -38,6 +38,7 @@ def armESCs(escList):
 
 def parseCmd(contents,escList):
   cmd = contents[CMD]
+  print cmd
   if cmd == 1:
     # put quad at rest <1, 0, 0, 0, 0...>
     print "putting quad to rest"
@@ -55,6 +56,8 @@ def parseCmd(contents,escList):
     speed = float(str(contents[MOT2]) + "." + str(contents[MOT2X]))
     print "putting esc at " + esc + " at the same speed: " + str(speed)
     PWM.set_duty_cycle(esc, speed)
+  else
+    return
   return 
 
 setGlobals()
