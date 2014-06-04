@@ -15,19 +15,29 @@ MOT3 = 6
 MOT4 = 8
 RESTSPEED = 4
 
-# FUNCTIONS
+#CMDS
+#LEVEL 0 API CMDS: <esc primitives> this is the level concerning ESC speeds
+REST = 1
+ALLSET = 2
+ONESET = 3
+
+#LEVEL 1 API CMDS: <movement primitives> built atop esc primitives
+MOVE   = 4 #move <left, right, forward and back>
+ALT    = 5 #altitude <rise or fall>
+
+#FUNCTIONS
 def setGlobals():
   global ESC1PIN
   global ESC2PIN 
   global ESC3PIN 
   global ESC4PIN
-  global RECVPIN 
-  global CEPIN
-  global IRQPIN
   ESC1PIN = "P8_13"
   ESC2PIN = "P9_16"
   ESC3PIN = "P9_21"
   ESC4PIN = "P9_42"
+  global RECVPIN 
+  global CEPIN
+  global IRQPIN
   RECVPIN = "P9_41"
   CEPIN   = "P9_27"
   IRQPIN  = "P9_32"
@@ -41,18 +51,18 @@ def parseCmd(contents,escList,latest):
   if ((cmd == latest) or (cmd == None)):
     print "nothing to do"
     return latest
-  if cmd == 1:
+  if cmd == REST:
     # put quad at rest <1, 0, 0, 0, 0...>
     print "putting quad to rest"
     for esc in escList:
       PWM.set_duty_cycle(esc, float(RESTSPEED))
-  elif cmd == 2:
+  elif cmd == ALLSET:
     # put all motors at same speed <2, 0, 6, 3, 0> = 6.3
     speed = float(str(contents[MOT1]) + "." + str(contents[MOT1X]))
     print "putting all motors at the same speed: " + str(speed)
     for esc in escList:
       PWM.set_duty_cycle(esc, speed)
-  elif cmd == 3:
+  elif cmd == ONESET:
     # update motors individually <3, 0, 1, 0, 6, 6> => sets motor on ESC1 to 6.6
     esc = escList[contents[MOT1]-1]
     speed = float(str(contents[MOT2]) + "." + str(contents[MOT2X]))
@@ -60,12 +70,13 @@ def parseCmd(contents,escList,latest):
     PWM.set_duty_cycle(esc, speed)
   return cmd
 
+#MAIN SCRIPT
 setGlobals()
 escList = [ESC1PIN, ESC2PIN, ESC3PIN, ESC4PIN]
 armESCs(escList)
 latest = 0
 
-# get command arguments
+#get command arguments
 recvDelay = float(sys.argv[1]) # how much time between reading from transmitter
 
 #set notification pin P9_36
@@ -86,8 +97,9 @@ radio.setPALevel(NRF24.PA_MIN)
 # print radio.getDataRate()
 # print radio.getCRCLength()
 
-# open up listening
-radio.openReadingPipe(1, [0xc2, 0xc2, 0xc2, 0xc2, 0xc2])
+#open up listening
+readingPipe = [0xc2, 0xc2, 0xc2, 0xc2, 0xc2]
+radio.openReadingPipe(1, readingPipe)
 radio.startListening()
 
 while True:

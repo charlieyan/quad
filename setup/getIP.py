@@ -5,11 +5,19 @@ import smtplib
 import socket
 from email.mime.text import MIMEText
 import datetime
+import sys
  
 # Change to your own account information
-to = 'charlieyan08@gmail.com'
-gmail_user = 'charlieyan08@gmail.com'
-gmail_password = '900815google'
+# sys.argv[1] has the to, 
+# sys.argv[2] has the gmail_user
+# sys.argv[3] has your password
+if (len(sys.argv) != 4):
+  print "missing arguments for sending ip email"
+  exit()
+to = sys.argv[1]
+gmail_user = sys.argv[2]
+gmail_password = sys.argv[3]
+print "sending email to " + to
  
 smtpserver = smtplib.SMTP('smtp.gmail.com', 587)
 smtpserver.ehlo()
