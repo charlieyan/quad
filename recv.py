@@ -5,6 +5,7 @@ import sys
 from nrf24 import NRF24
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
+from Adafruit_I2C import *
 from pwmDriver import PWMDriver
 
 #NRF
@@ -94,7 +95,7 @@ latest = 0
 recvDelay = float(sys.argv[1]) # how much time between reading from transmitter
 debug = (int(sys.argv[2]) == 1)
 
-i2c = Adafruit_I2C(0x77)
+i2c = Adafruit_I2C(1)
 
 #set notification pin P9_41
 GPIO.setup(RECVPIN, GPIO.OUT)
