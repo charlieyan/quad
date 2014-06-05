@@ -1,11 +1,11 @@
 #usage: sudo -u root python recv.py 0.5
 #make sure you run the once_ ....sh before running this
+import time
+import sys
 from nrf24 import NRF24
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
-from Adafruit_I2C import Adafruit_I2C
-import time
-import sys
+from pwmDriver import PWMDriver
 
 #NRF
 SPIMAJOR = 2
