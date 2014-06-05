@@ -26,6 +26,14 @@ MOVE   = 4 #move <left, right, forward and back>
 ALT    = 5 #altitude <rise or fall>
 
 #FUNCTIONS
+def printNRFDetails():
+  #print details, these must match what the transmitter is putting out
+  print radio.getChannel()
+  print radio.getPayloadSize()
+  print radio.getPALevel()
+  print radio.getDataRate()
+  print radio.getCRCLength()
+
 def setGlobals():
   global ESC1PIN
   global ESC2PIN 
@@ -39,8 +47,8 @@ def setGlobals():
   global CEPIN
   global IRQPIN
   RECVPIN = "P9_41"
-  CEPIN   = "P9_27"
-  IRQPIN  = "P9_32"
+  CEPIN   = "P9_15"
+  IRQPIN  = "P9_16"
 
 def armESCs(escList):
   for esc in escList:
@@ -78,6 +86,7 @@ latest = 0
 
 #get command arguments
 recvDelay = float(sys.argv[1]) # how much time between reading from transmitter
+debug = (int(sys.argv[2]) == 1)
 
 #set notification pin P9_36
 GPIO.setup(RECVPIN, GPIO.OUT)
@@ -90,12 +99,8 @@ radio.setPayloadSize(10)
 radio.setDataRate(NRF24.BR_1MBPS)
 radio.setPALevel(NRF24.PA_MIN)
 
-#print details, these must match what the transmitter is putting out
-# print radio.getChannel()
-# print radio.getPayloadSize()
-# print radio.getPALevel()
-# print radio.getDataRate()
-# print radio.getCRCLength()
+if debug:
+  printNRFDetails()
 
 #open up listening
 readingPipe = [0xc2, 0xc2, 0xc2, 0xc2, 0xc2]
@@ -111,7 +116,9 @@ while True:
   recv_buffer = []
   radio.read(recv_buffer)
   latest = parseCmd(recv_buffer,escList, latest)
-  #print recv_buffer
+  if debug:
+    print recv_buffer
+    radio.printDetails()
   time.sleep(recvDelay)
 
 GPIO.cleanup()
