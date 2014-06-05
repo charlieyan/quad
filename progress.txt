@@ -19,4 +19,15 @@ you need to disable HDMI by editing the uEnv.txt file
 mv the .dtbo files to /lib/firmware
 make sure /dev/spi2.0 exists
 
+disable the hdmi
+mkdir /mnt/boot/
+mount /dev/mmcblk0p1 /mnt/boot/
+vim /mnt/boot/uEnv.txt
+add 
+optargs=quiet capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
+restart by
+shutdown -r now
+
+cat /sys/devices/bone_capemgr.*/slots
+
 run python rev.py

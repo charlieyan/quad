@@ -3,8 +3,14 @@
 from nrf24 import NRF24
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
+from Adafruit_I2C import Adafruit_I2C
 import time
 import sys
+
+#NRF
+SPIMAJOR = 2
+SPIMINOR = 0
+NRFCHANNEL = 76
 
 CMD = 0
 MOT1 = 2
@@ -88,13 +94,15 @@ latest = 0
 recvDelay = float(sys.argv[1]) # how much time between reading from transmitter
 debug = (int(sys.argv[2]) == 1)
 
-#set notification pin P9_36
+i2c = Adafruit_I2C(0x77)
+
+#set notification pin P9_41
 GPIO.setup(RECVPIN, GPIO.OUT)
 GPIO.output(RECVPIN, GPIO.HIGH)
 
 radio = NRF24()
-radio.begin(2,0, CEPIN, IRQPIN) #must be 2,0
-radio.setChannel(76)
+radio.begin(SPIMAJOR, SPIMINOR, CEPIN, IRQPIN) #must be 2,0, plug into SPI0 ones
+radio.setChannel(NRFCHANNEL)
 radio.setPayloadSize(10)
 radio.setDataRate(NRF24.BR_1MBPS)
 radio.setPALevel(NRF24.PA_MIN)
