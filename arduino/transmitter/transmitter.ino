@@ -44,6 +44,14 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   Serial.println(radio.getCRCLength());
 }//--(end setup )---
 
+void setAll(int s)
+{
+  commmands[0] = 2; //2 bytes max, CMD
+  commmands[1] = s; //2 bytes max, MOT1
+  commmands[2] = 0; //2 bytes max, MOT2
+  commmands[3] = 0; //2 bytes max, MOT3
+  commmands[4] = 0; //2 bytes max, MOT4
+}
 
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 {
@@ -53,11 +61,7 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
   CMDs = [NOP, REST, FLY], NOP will cause it to beep
   MOTOR# = speed
   */
-  commmands[0] = 2; //2 bytes max, CMD
-  commmands[1] = 4; //2 bytes max, MOT1
-  commmands[2] = 6; //2 bytes max, MOT2
-  commmands[3] = 6; //2 bytes max, MOT3
-  commmands[4] = 6; //2 bytes max, MOT4
+  setAll(10);
   Serial.println("Writing");
   radio.write( commmands, sizeof(commmands) );
   delay(250);
