@@ -1,3 +1,5 @@
+installing operating system
+===========================
 get host's ip address using angstrom or w/e
 https://rcn-ee.net/deb/microsd/trusty/
 use the 14.04 img.xz, boot from it
@@ -7,6 +9,8 @@ http://elinux.org/Beagleboard:Expanding_File_System_Partition_On_A_microSD
 at this point, you need to have:
 default boot uSD, uSD 16 GB (or however big your uSD is)
 
+setting up on os
+================
 ssh-keygen -t rsa
 upload to github the key
 clone the repository git@github.com:charlieyan/quad.git
@@ -14,20 +18,18 @@ set up python (setup/setup_python.sh)
 install vim
 set up dtc (setup/dtc.sh)
 set up pwm (setup/setup_pwm.sh)
-
-you need to disable HDMI by editing the uEnv.txt file
 mv the .dtbo files to /lib/firmware
-make sure /dev/spi2.0 exists
-
-disable the hdmi
+disable the hdmi by modifying uEnv.txt
 mkdir /mnt/boot/
 mount /dev/mmcblk0p1 /mnt/boot/
 vim /mnt/boot/uEnv.txt
-add 
-optargs=quiet capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
-restart by
-shutdown -r now
+add "optargs=quiet capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN"
+set up crontabs to control system LED on reboot
+@reboot /home/ubuntu/quad/bootScript.sh
+restart by shutdown -r now, then
+cat /sys/devices/bone_capemgr.*/slots and ls /dev/spi*
+make sure /dev/spi2.0 exists
 
-cat /sys/devices/bone_capemgr.*/slots
-
+finally
+=======
 run python rev.py
