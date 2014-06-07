@@ -104,9 +104,10 @@ class PWMDriver:
     print "Final pre-scale: " + str(prescale)
    
     oldmode = self.readU8(self.PCA9685_MODE1)
-    newmode = oldmode & 0x7F | 0x10
-    self.write8(self.PCA9685_MODE1, newmode)
-    self.write8(self.PCA9685_PRESCALE, prescale)
+    print "old mode: " + str(int(oldmode))
+    newmode = oldmode & 0x7F | 0x10 #take the 7 LSB of oldmode, and set the SLEEP 1 to turn off oscillator
+    self.write8(self.PCA9685_MODE1, newmode) #turn off oscillator
+    self.write8(self.PCA9685_PRESCALE, prescale) #set the prescale
     self.write8(self.PCA9685_MODE1, oldmode)
     time.sleep(5/1000)
-    self.write8(self.PCA9685_MODE1, oldmode | 0xa1)    
+    self.write8(self.PCA9685_MODE1, oldmode | 0xa1) #restart
