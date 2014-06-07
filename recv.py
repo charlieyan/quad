@@ -1,5 +1,6 @@
 #usage: sudo -u root python recv.py 0.5
 #make sure you run the once_ ....sh before running this
+import os
 import time
 import sys
 from nrf24 import NRF24
@@ -9,7 +10,7 @@ from Adafruit_I2C import *
 from pwmDriver import PWMDriver
 
 #NRF
-SPIMAJOR = 2
+SPIMAJOR = 1
 SPIMINOR = 0
 NRFCHANNEL = 76
 
@@ -33,6 +34,14 @@ MOVE   = 4 #move <left, right, forward and back>
 ALT    = 5 #altitude <rise or fall>
 
 #FUNCTIONS
+def debugMsg(msg):
+  if debug:
+    print msg  
+
+def toggleSysLED(led, state):
+  #led = [0,1,2,3], state = 0/1
+  os.system("sudo /home/ubuntu/quad/util/set.sh " + str(led) + " " + str(state))
+
 def printNRFDetails():
   #print details, these must match what the transmitter is putting out
   print radio.getChannel()
@@ -53,9 +62,8 @@ def setGlobals():
   global RECVPIN 
   global CEPIN
   global IRQPIN
-  RECVPIN = "P9_41"
-  CEPIN   = "P9_15"
-  IRQPIN  = "P9_16"
+  CEPIN   = "P9_27"
+  IRQPIN  = "P9_32"
 
 def armESCs(escList):
   for esc in escList:
@@ -64,8 +72,9 @@ def armESCs(escList):
 def parseCmd(contents,escList,latest):
   cmd = contents[CMD]
   if ((cmd == latest) or (cmd == None)):
-    print "nothing to do"
+    debugMsg("nothing to do")
     return latest
+  toggleSysLED(1,1)
   if cmd == REST:
     # put quad at rest <1, 0, 0, 0, 0...>
     print "putting quad to rest"
@@ -83,6 +92,8 @@ def parseCmd(contents,escList,latest):
     speed = float(str(contents[MOT2]) + "." + str(contents[MOT2X]))
     print "putting esc at " + esc + " at speed: " + str(speed)
     PWM.set_duty_cycle(esc, speed)
+  time.sleep(0.5)
+  toggleSysLED(1,0)
   return cmd
 
 #MAIN SCRIPT
@@ -95,12 +106,6 @@ latest = 0
 recvDelay = float(sys.argv[1]) # how much time between reading from transmitter
 debug = (int(sys.argv[2]) == 1)
 
-i2c = Adafruit_I2C(1)
-
-#set notification pin P9_41
-GPIO.setup(RECVPIN, GPIO.OUT)
-GPIO.output(RECVPIN, GPIO.HIGH)
-
 radio = NRF24()
 radio.begin(SPIMAJOR, SPIMINOR, CEPIN, IRQPIN) #must be 2,0, plug into SPI0 ones
 radio.setChannel(NRFCHANNEL)
@@ -110,6 +115,7 @@ radio.setPALevel(NRF24.PA_MIN)
 
 if debug:
   printNRFDetails()
+  radio.printDetails()
 
 #open up listening
 readingPipe = [0xc2, 0xc2, 0xc2, 0xc2, 0xc2]
@@ -120,14 +126,12 @@ while True:
   pipe = [0]
   while not radio.available(pipe):
     time.sleep(recvDelay)
-    print "no radio\n"
+    debugMsg("no radio")
     latest = parseCmd([1,0,0,0],escList,latest)
   recv_buffer = []
   radio.read(recv_buffer)
   latest = parseCmd(recv_buffer,escList, latest)
-  if debug:
-    print recv_buffer
-    radio.printDetails()
+  debugMsg(recv_buffer)
   time.sleep(recvDelay)
 
 GPIO.cleanup()
