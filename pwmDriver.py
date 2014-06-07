@@ -15,6 +15,11 @@ class PWMDriver:
   LED0_OFF_L = 0x8
   LED0_OFF_H = 0x9
 
+  LED4_ON_L = 0x6
+  LED4_ON_H = 0x7
+  LED4_OFF_L = 0x8
+  LED4_OFF_H = 0x9
+
   ALLLED_ON_L = 0xFA
   ALLLED_ON_H = 0xFB
   ALLLED_OFF_L = 0xFC
@@ -82,12 +87,12 @@ class PWMDriver:
   def reverseByteOrder(self, data):
     return self.i2c.reverseByteOrder(data)
 
-  def setPWM(self, num, on, off):
-    self.i2c.write8(self.i2caddr,self.LED0_ON_L+4*num)
-    self.i2c.write8(self.i2caddr,on)
-    self.i2c.write8(self.i2caddr,on>>8)
-    self.i2c.write8(self.i2caddr,off)
-    self.i2c.write8(self.i2caddr,off>>8)
+  def setPWM(self, num):
+    addr = self.LED0_ON_L+4*num
+    self.i2c.write8(addr,  0xFF) #LED#_ON_L, 8 LSB
+    self.i2c.write8(addr+1,0x07) #LED#_ON_L, NONWRITABLE, ALL_OFF, 4 MSB
+    self.i2c.write8(addr+2,0xFF) #LED#_OFF_L, 8 LSB
+    self.i2c.write8(addr+3,0x07) #LED#_OFF_L, NONWRITABLE, ALL_ON, 4 MSB
 
   def setPWMFreq(self, freq):
     prescaleval = 25000000
