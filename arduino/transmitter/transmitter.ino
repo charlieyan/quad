@@ -29,6 +29,8 @@ RF24 radio(CE_PIN, CSN_PIN); // Create a Radio
 /*-----( Declare Variables )-----*/
 int commmands[5];  // 5 bytes: CMD, MOTOR1, MOTOR2, MOTOR3, MOTOR4
 
+char serialinput;
+
 void setup()   /****** SETUP: RUNS ONCE ******/
 {
   Serial.begin(9600);
@@ -44,15 +46,24 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   Serial.println(radio.getCRCLength());
 }//--(end setup )---
 
-void setAll(int s)
-{
-  commmands[0] = 2; //2 bytes max, CMD
-  commmands[1] = s; //2 bytes max, MOT1
+void go() {
+  // reset
+  commmands[0] = 1; //2 bytes max, CMD 1,3,10 ALLSET: 1, 5
+  commmands[1] = 0; //2 bytes max, MOT1 6, 9, 11
+  commmands[2] = 0; //2 bytes max, MOT2
+  commmands[3] = 0; //2 bytes max, MOT3M
+  commmands[4] = 0; //2 bytes max, MOT4
+  radio.write( commmands, sizeof(commmands) );
+  delay(1000);
+  
+  commmands[0] = 5; //2 bytes max, CMD 1,3,10 ALLSET: 1, 5
+  commmands[1] = 9; //2 bytes max, MOT1 6, 9, 11
   commmands[2] = 0; //2 bytes max, MOT2
   commmands[3] = 0; //2 bytes max, MOT3
   commmands[4] = 0; //2 bytes max, MOT4
+  radio.write( commmands, sizeof(commmands) );
+  
 }
-
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 {
   /*
@@ -61,10 +72,34 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
   CMDs = [NOP, REST, FLY], NOP will cause it to beep
   MOTOR# = speed
   */
-  setAll(10);
-  Serial.println("Writing");
+  // send data only when you receive data:
+//  if (Serial.available() > 0) {
+//            // read the incoming byte:
+//            serialinput = Serial.read();
+//
+//            if (serialinput == 'go')
+//            {
+//              Serial.println("going to go! stand back!");
+//              //go();
+//            }
+//    }
+  
+  commmands[0] = 1; //2 bytes max, CMD 1,3,10 ALLSET: 1, 5
+  commmands[1] = 0; //2 bytes max, MOT1 6, 9, 11
+  commmands[2] = 0; //2 bytes max, MOT2
+  commmands[3] = 0; //2 bytes max, MOT3M
+  commmands[4] = 0; //2 bytes max, MOT4
   radio.write( commmands, sizeof(commmands) );
-  delay(250);
+  delay(1000);
+  
+//  commmands[0] = 5; //2 bytes max, CMD 1,3,10 ALLSET: 1, 5
+//  commmands[1] = 9; //2 bytes max, MOT1 6, 9, 11
+//  commmands[2] = 0; //2 bytes max, MOT2
+//  commmands[3] = 0; //2 bytes max, MOT3
+//  commmands[4] = 0; //2 bytes max, MOT4
+//  radio.write( commmands, sizeof(commmands) );
+  
+  delay(500);
 }//--(end main loop )---
 
 /*-----( Declare User-written Functions )-----*/
