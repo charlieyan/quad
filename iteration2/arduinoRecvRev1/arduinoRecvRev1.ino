@@ -153,10 +153,10 @@ int readThrottle() {
  
 //Change velocity of the 4 escs at the same time
 void writeTo4Escs(int throttle) {
-  int throttle2 = throttle - 7;
+  /*int throttle2 = throttle - 7;
   if (throttle2 < 0) {
     throttle2 = 0;
-  }
+  }*/
   esc1.write(throttle);
   esc2.write(throttle);
   esc3.write(throttle);
@@ -184,8 +184,8 @@ int normalizeThrottle(int value) {
   if(value < 0) {
     return 0;
     
-  } else if(value > 40) { // use 180
-    return 40;
+  } else if(value > 180) { // use 180
+    return 180;
   }
   return value;
 }
